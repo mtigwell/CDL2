@@ -5,11 +5,11 @@ def preprocess_data():
     import pickle
 
     # EMBEDDING SIZE
-    with open(r"../../data/citeulike/citeulike-a/vocabulary.dat") as vocabulary_file:
+    with open(r"../data/citeulike/citeulike-a/vocabulary.dat") as vocabulary_file:
         embedding_size = len(vocabulary_file.readlines())
 
     # Create Item Matrix 
-    with open(r"../../data/citeulike/citeulike-a/mult.dat") as item_info_file:
+    with open(r"../data/citeulike/citeulike-a/mult.dat") as item_info_file:
         # initialize item matrix (16980 , 8000)
         item_size = len(item_info_file.readlines())
         item_bow = np.zeros((item_size , embedding_size))
@@ -22,7 +22,7 @@ def preprocess_data():
                 item_bow[index][int(vocabulary_index)] = number
 
     #find user_size = 5551
-    with open(r"../../data/citeulike/citeulike-a/users.dat") as rating_file:
+    with open(r"../data/citeulike/citeulike-a/users.dat") as rating_file:
         user_size = len(rating_file.readlines())
 
     #initialize rating_matrix (5551 , 16980)
