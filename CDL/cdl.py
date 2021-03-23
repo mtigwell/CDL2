@@ -206,8 +206,8 @@ class CDL():
 
     # create directory
     def make_directory(self):
-        if not os.path.isdir(self.dir_save):
-            os.system('mkdir %s' % self.dir_save)
+        os.makedirs(self.dir_save)
+
         fp = open(self.dir_save+'/cdl.log', 'w')
         print('lambda_v/lambda_u/ratio/K: %f/%f/%f/%d' % (self.lambda_v, self.lambda_u, self.lv, self.k))
         fp.write('lambda_v/lambda_u/ratio/K: %f/%f/%f/%d\n' %
@@ -222,9 +222,6 @@ class CDL():
     # def testing(self, rating_matrix):
     #     sess = tf.compat.v1.Session()
     #     sess.run(tf.compat.v1.global_variables_initializer())
-
     #     self.test_rating_noise = add_noise(self.item_infomation_matrix , 0.3)
-
     #     rating_matrix # true label
-
     #     _ , my_loss = sess.run([self.optimizer, self.Loss, self.recall] , feed_dict={self.model_X_0 :X_train_batch , self.model_X_c : y_train_batch , self.model_V:V_batch, self.model_drop_ratio : 0.1})
