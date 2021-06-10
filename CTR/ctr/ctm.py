@@ -1,7 +1,7 @@
-from .util import *
-from .simplex_projection import euclidean_proj_simplex
-from .trainset import Trainset
-from .constant import *
+from util import *
+from simplex_projection import euclidean_proj_simplex
+from trainset import Trainset
+from constant import *
 import time
 import numpy as np
 import scipy.optimize
@@ -10,8 +10,9 @@ import pickle
 import collections
 import logging
 
-logging.basicConfig(filename='../logs/ctr_{}.log'.format(time.strftime("%Y-%m-%d_%H-%M-%S", time.localtime())),
-                                                      format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
+
+# logging.basicConfig(filename='../logs/ctr_{}.log'.format(time.strftime("%Y-%m-%d_%H-%M-%S", time.localtime())),
+                                                    #   format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
 np.random.seed(2018)
 
 

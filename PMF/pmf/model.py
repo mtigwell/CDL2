@@ -29,6 +29,8 @@ class PMF:
             print("Epoch: ", epoch, end=" ")
             np.random.shuffle(train_data)
 
+            print(round(train_data.shape[0]/batch_size))
+
             for batch in range(round(train_data.shape[0]/batch_size)):
                 train_batch = train_data[batch*batch_size:(batch+1)*batch_size]
                 users = train_batch[:, 0].astype(np.int)
@@ -41,8 +43,14 @@ class PMF:
                 dw_u = np.zeros((self.n_users, n_features))
                 dw_p = np.zeros((self.n_products, n_features))
                 for r in range(batch_size):
-                    dw_u[users[r]] += batch_grad_u[r]
-                    dw_p[products[r]] += batch_grad_p[r]
+                    try:
+                        dw_u[users[r]] += batch_grad_u[r]
+                    except:
+                        continue
+                    try:
+                        dw_p[products[r]] += batch_grad_p[r]
+                    except:
+                        continue
                 update_u = momentum*update_u + lr*dw_u/batch_size
                 update_p = momentum*update_p + lr*dw_p/batch_size
                 w_users -= update_u

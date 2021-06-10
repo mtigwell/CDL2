@@ -1,5 +1,6 @@
 import numpy as np
 from utils.utils import get_data, split_data
+from utils.dataloader import load_data
 import argparse
 from pmf.model import PMF
 from pmf.constrained_pmf import CPMF
@@ -9,9 +10,9 @@ np.random.seed(SEED)
 
 if __name__=="__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--algorithm", default="CPMF",
+    parser.add_argument("--algorithm", default="PMF",
                         type=str, help="Algorithm to use")
-    parser.add_argument("--mode", default="netflix",
+    parser.add_argument("--mode", default="citeulike",
                         type=str, help="Download data mode or load data mode")
     parser.add_argument("--data_url",
                         type=str, help="Url for rating data")
@@ -37,10 +38,10 @@ if __name__=="__main__":
     # Using default netflix dataset, using url to download data or load data from path.
     if args.mode == "netflix":
         data = get_data()
-
+    elif args.mode == "citeulike":
+        data = load_data()
     elif args.mode == "download":
         data = get_data(args.mode, args.data_url)
-
     else:
         data = get_data(args.mode, "", args.data_path)
 
@@ -55,6 +56,8 @@ if __name__=="__main__":
     params["features"] = args.features
     params["users"] = np.unique(data[:, 0]).shape[0]
     params["products"] = np.unique(data[:, 1]).shape[0]
+
+    print(params)
 
     if args.algorithm == "PMF":
         PMF_experiment = PMF(params)

@@ -1,0 +1,44 @@
+2021-06-07 20:46:06,173 : INFO : using symmetric alpha at 0.005
+2021-06-07 20:46:06,173 : INFO : using symmetric eta at 0.005
+2021-06-07 20:46:06,175 : INFO : using serial LDA version on this node
+2021-06-07 20:46:06,343 : INFO : running online (multi-pass) LDA training, 200 topics, 100 passes over the supplied corpus of 16980 documents, updating model once every 2000 documents, evaluating perplexity every 16980 documents, iterating 50x with a convergence threshold of 0.001000
+2021-06-07 20:46:06,377 : INFO : PROGRESS: pass 0, at document #2000/16980
+2021-06-07 20:46:10,392 : INFO : merging changes from 2000 documents into a model of 16980 documents
+2021-06-07 20:46:10,476 : INFO : topic #122 (0.005): 0.009*"algorithms" + 0.008*"knowledge" + 0.007*"software" + 0.007*"cognitive" + 0.006*"components" + 0.006*"algorithm" + 0.006*"design" + 0.005*"new" + 0.005*"theory" + 0.005*"two"
+2021-06-07 20:46:10,476 : INFO : topic #31 (0.005): 0.011*"new" + 0.008*"approach" + 0.007*"analysis" + 0.007*"detection" + 0.006*"style" + 0.006*"web" + 0.006*"social" + 0.005*"results" + 0.005*"design" + 0.005*"tracking"
+2021-06-07 20:46:10,476 : INFO : topic #111 (0.005): 0.011*"learning" + 0.010*"genes" + 0.009*"new" + 0.007*"work" + 0.007*"genome" + 0.007*"methods" + 0.007*"function" + 0.007*"transcription" + 0.007*"algorithms" + 0.007*"based"
+2021-06-07 20:46:10,476 : INFO : topic #135 (0.005): 0.017*"network" + 0.014*"networks" + 0.010*"neurons" + 0.008*"information" + 0.008*"spiking" + 0.008*"structure" + 0.007*"neural" + 0.007*"based" + 0.006*"model" + 0.005*"lexical"
+2021-06-07 20:46:10,477 : INFO : topic #158 (0.005): 0.015*"protein" + 0.014*"proteins" + 0.012*"gene" + 0.010*"algorithm" + 0.008*"yeast" + 0.006*"cells" + 0.006*"network" + 0.005*"information" + 0.005*"clustering" + 0.005*"two"
+2021-06-07 20:46:10,478 : INFO : topic diff=151.060593, rho=1.000000
+2021-06-07 20:46:10,524 : INFO : PROGRESS: pass 0, at document #4000/16980
+2021-06-07 20:46:13,511 : INFO : merging changes from 2000 documents into a model of 16980 documents
+2021-06-07 20:46:13,595 : INFO : topic #109 (0.005): 0.015*"gene" + 0.013*"stack" + 0.012*"networks" + 0.011*"ubiquitous" + 0.009*"structure" + 0.009*"dna" + 0.008*"methods" + 0.008*"protein" + 0.007*"model" + 0.007*"function"
+2021-06-07 20:46:13,596 : INFO : topic #95 (0.005): 0.026*"system" + 0.025*"file" + 0.021*"trust" + 0.019*"distributions" + 0.017*"power" + 0.015*"law" + 0.011*"delay" + 0.010*"matching" + 0.009*"abbreviations" + 0.009*"visual"
+2021-06-07 20:46:13,596 : INFO : topic #57 (0.005): 0.019*"models" + 0.016*"networks" + 0.013*"users" + 0.013*"noise" + 0.010*"information" + 0.008*"web" + 0.008*"model" + 0.007*"computable" + 0.007*"language" + 0.007*"random"
+2021-06-07 20:46:13,596 : INFO : topic #138 (0.005): 0.015*"entity" + 0.015*"gene" + 0.013*"text" + 0.010*"biomedical" + 0.009*"genes" + 0.007*"human" + 0.007*"information" + 0.007*"literature" + 0.006*"methods" + 0.006*"annotation"
+2021-06-07 20:46:13,596 : INFO : topic #166 (0.005): 0.020*"climate" + 0.011*"systems" + 0.011*"consumption" + 0.011*"model" + 0.011*"signaling" + 0.010*"database" + 0.008*"biological" + 0.008*"information" + 0.007*"medline" + 0.007*"networks"
+2021-06-07 20:46:13,598 : INFO : topic diff=1.912021, rho=0.707107
+2021-06-07 20:46:13,643 : INFO : PROGRESS: pass 0, at document #6000/16980
+2021-06-07 20:46:16,188 : INFO : merging changes from 2000 documents into a model of 16980 documents
+2021-06-07 20:46:16,273 : INFO : topic #22 (0.005): 0.023*"functional" + 0.021*"orientation" + 0.020*"visual" + 0.018*"precision" + 0.016*"cortex" + 0.015*"feature" + 0.011*"detection" + 0.011*"columns" + 0.010*"microscopy" + 0.010*"recall"
+2021-06-07 20:46:16,273 : INFO : topic #5 (0.005): 0.033*"tumors" + 0.031*"cancer" + 0.024*"spatial" + 0.020*"motor" + 0.013*"behaviour" + 0.012*"areas" + 0.012*"control" + 0.011*"cell" + 0.011*"interference" + 0.011*"levels"
+2021-06-07 20:46:16,273 : INFO : topic #194 (0.005): 0.036*"patterns" + 0.020*"programs" + 0.020*"pattern" + 0.017*"xml" + 0.015*"book" + 0.013*"software" + 0.012*"systems" + 0.010*"design" + 0.010*"procedures" + 0.009*"authors"
+2021-06-07 20:46:16,274 : INFO : topic #4 (0.005): 0.025*"graphs" + 0.019*"graph" + 0.018*"directed" + 0.017*"limit" + 0.015*"matrix" + 0.013*"size" + 0.013*"algorithms" + 0.013*"architecture" + 0.012*"vertices" + 0.012*"ecological"
+2021-06-07 20:46:16,274 : INFO : topic #25 (0.005): 0.058*"services" + 0.051*"sensor" + 0.021*"composition" + 0.014*"taxonomy" + 0.014*"new" + 0.014*"method" + 0.012*"factors" + 0.012*"similarity" + 0.011*"human" + 0.010*"based"
+2021-06-07 20:46:16,276 : INFO : topic diff=2.095701, rho=0.577350
+2021-06-07 20:46:16,319 : INFO : PROGRESS: pass 0, at document #8000/16980
+2021-06-07 20:46:19,035 : INFO : merging changes from 2000 documents into a model of 16980 documents
+2021-06-07 20:46:19,134 : INFO : topic #72 (0.005): 0.044*"diversity" + 0.042*"species" + 0.033*"spatial" + 0.026*"animal" + 0.024*"environmental" + 0.017*"gradient" + 0.013*"plant" + 0.012*"plants" + 0.012*"local" + 0.012*"differences"
+2021-06-07 20:46:19,134 : INFO : topic #106 (0.005): 0.021*"boosting" + 0.020*"wavelet" + 0.015*"algorithm" + 0.013*"update" + 0.010*"supplemental" + 0.010*"informed" + 0.009*"hci" + 0.008*"based" + 0.008*"image" + 0.008*"model"
+2021-06-07 20:46:19,134 : INFO : topic #75 (0.005): 0.046*"human" + 0.044*"genome" + 0.025*"mouse" + 0.023*"disease" + 0.022*"genes" + 0.021*"gene" + 0.016*"sequencing" + 0.016*"analysis" + 0.015*"sequence" + 0.011*"genomes"
+2021-06-07 20:46:19,135 : INFO : topic #167 (0.005): 0.059*"brain" + 0.057*"task" + 0.046*"activity" + 0.044*"memory" + 0.035*"cortex" + 0.024*"neural" + 0.023*"stimuli" + 0.022*"regions" + 0.021*"activation" + 0.019*"tasks"
+2021-06-07 20:46:19,135 : INFO : topic #19 (0.005): 0.090*"quantum" + 0.027*"cue" + 0.025*"likelihood" + 0.019*"variance" + 0.019*"trial" + 0.018*"maximum" + 0.018*"estimation" + 0.013*"physical" + 0.012*"computation" + 0.011*"reinforcement"
+2021-06-07 20:46:19,136 : INFO : topic diff=2.202815, rho=0.500000
+2021-06-07 20:46:19,182 : INFO : PROGRESS: pass 0, at document #10000/16980
+2021-06-07 20:46:21,956 : INFO : merging changes from 2000 documents into a model of 16980 documents
+2021-06-07 20:46:22,046 : INFO : topic #175 (0.005): 0.023*"weak" + 0.022*"transformation" + 0.020*"processes" + 0.019*"clock" + 0.018*"determination" + 0.017*"quantify" + 0.016*"micro" + 0.011*"levels" + 0.011*"nine" + 0.011*"retained"
+2021-06-07 20:46:22,046 : INFO : topic #24 (0.005): 0.088*"social" + 0.045*"information" + 0.025*"communication" + 0.021*"awareness" + 0.015*"study" + 0.015*"people" + 0.014*"collaboration" + 0.014*"research" + 0.013*"networks" + 0.012*"computer"
+2021-06-07 20:46:22,046 : INFO : topic #54 (0.005): 0.018*"functional" + 0.017*"binding" + 0.015*"sites" + 0.014*"predictions" + 0.014*"genes" + 0.013*"drosophila" + 0.012*"analysis" + 0.011*"protein" + 0.010*"interactions" + 0.010*"predicted"
+2021-06-07 20:46:22,047 : INFO : topic #133 (0.005): 0.031*"learning" + 0.018*"consciousness" + 0.018*"core" + 0.014*"mental" + 0.014*"objectives" + 0.011*"education" + 0.010*"conscious" + 0.010*"firm" + 0.010*"base" + 0.010*"defense"
+2021-06-07 20:46:22,047 : INFO : topic #72 (0.005): 0.057*"species" + 0.043*"diversity" + 0.031*"spatial" + 0.031*"environmental" + 0.025*"plant" + 0.022*"animal" + 0.017*"gradient" + 0.017*"plants" + 0.012*"patterns" + 0.012*"abundance"
+2021-06-07 20:46:22,049 : INFO : topic diff=2.263546, rho=0.447214

@@ -34,6 +34,7 @@ class CDL():
         self.n_input = 8000
         self.n_hidden1 = 200
         self.n_hidden2 = 50
+        self.noise = 0.3
         self.k = K
 
         self.lv = lv
@@ -119,10 +120,13 @@ class CDL():
         self.optimizer = tf.compat.v1.train.AdamOptimizer(
             self.learning_rate).minimize(self.Loss)
 
+    def pretrain(self):
+        pass
+
     def training(self, rating_matrix):
         # np.random.shuffle(self.item_infomation_matrix) #random index of train data
         self.item_infomation_matrix_noise = add_noise(
-            self.item_infomation_matrix, 0.3)
+            self.item_infomation_matrix, self.noise)
 
         sess = tf.compat.v1.Session()
         sess.run(tf.compat.v1.global_variables_initializer())
@@ -157,12 +161,6 @@ class CDL():
 
             self.write_results(epoch, my_loss, recall, datetime.now() - start)
 
-            # print('V_SDAE {}'.format(V_sdae.shape))
-            # print('V shape {}'.format(V.shape))
-            # print('U Shape {}'.format(U.shape))
-            # print('R shape {}'.format(R.shape))
-            # print('Ratings Matrix shape {}'.format(rating_matrix.shape))
-
     def get_recall(self, ratings, pred, m):
         ''' 
         inputs: 
@@ -176,17 +174,11 @@ class CDL():
 
         for i, row in enumerate(ratings):
             newrow = np.take(row, top_m[i])
-            # print('Shape row {}'.format(row.shape))
-            # print('Shape top_m {}'.format(top_m[i].shape))
-            # print('Shape new row {}'.format(newrow.shape))
             b.append(newrow)
 
         b = np.array(b)
         b = b.squeeze(axis=1)
         good_picks = np.sum(np.array(b), axis=1)
-
-        # print('Shape b {}'.format(b.shape))
-        # print('Shape good picks {}'.format(good_picks.shape))
 
         # total number user likes
         user_picks = ratings.sum(axis=1)
