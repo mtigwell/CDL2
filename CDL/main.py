@@ -42,7 +42,22 @@ K = 50
 batch = 256
 dropout = 0.1
 
+
+from SDAE import SDAE
+
+SPLIT = 0.8 #80/20
+split = int(item_matrix.shape[0] * SPLIT)
+x_train = item_matrix[:split]
+x_test = item_matrix[split:]
+
+ae_layers = [784, 64, 16]
+sdae = SDAE(ae_layers)
+sdae.make()
+sdae.call(x_train, x_test, epochs=2)
+a = sdae.get_layers()
+
 result_directory = 'results/testrun'
 cdl = CDL(rating_matrix, item_matrix, lambda_u=1, lambda_v=10, lambda_w=10, lv=0.01, K=K, epochs=15, batch=batch, dir_save=result_directory, dropout=dropout, recall_m=100)
 cdl.build_model()
+# cdl.pretrain()
 cdl.training(rating_matrix)

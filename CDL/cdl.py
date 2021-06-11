@@ -1,3 +1,4 @@
+from SDAE import SDAE
 import tensorflow as tf
 import os
 import csv
@@ -120,12 +121,25 @@ class CDL():
         self.optimizer = tf.compat.v1.train.AdamOptimizer(
             self.learning_rate).minimize(self.Loss)
 
-    def pretrain(self):
-        pass
+    # def pretrain(self):
+    #     # train test split
+    #     SPLIT = 0.8 #80/20
+    #     split = int(self.item_infomation_matrix.shape[0] * SPLIT)
+    #     x_train = self.item_infomation_matrix[:split]
+    #     x_test = self.item_infomation_matrix[split:]
+
+    #     ae_layers = [self.n_input, self.n_hidden1, self.n_hidden2]
+    #     # ae_layers = [self.n_input, self.n_hidden1]
+
+    #     sdae = SDAE(ae_layers)
+    #     sdae.make()
+    #     sdae.call(x_train, x_test, epochs=1)
+    #     a = sdae.get_layers()
+    #     print(a)
 
     def training(self, rating_matrix):
         # np.random.shuffle(self.item_infomation_matrix) #random index of train data
-        self.item_infomation_matrix_noise = add_noise(
+        self.item_information_matrix = add_noise(
             self.item_infomation_matrix, self.noise)
 
         sess = tf.compat.v1.Session()
@@ -138,13 +152,13 @@ class CDL():
             print("%d / %d" % (epoch+1, self.epochs))
 
             V_sdae = sess.run(self.V_sdae, feed_dict={
-                              self.model_X_0: self.item_infomation_matrix_noise, self.model_drop_ratio: self.drop_ratio})
+                              self.model_X_0: self.item_information_matrix, self.model_drop_ratio: self.drop_ratio})
 
             U, V = mf.ALS(V_sdae)
             V = np.resize(V, (16980, 50))
 
             for i in range(0, self.item_infomation_matrix.shape[0], self.batch_size):
-                X_train_batch = self.item_infomation_matrix_noise[i:i+self.batch_size]
+                X_train_batch = self.item_information_matrix[i:i+self.batch_size]
                 y_train_batch = self.item_infomation_matrix[i:i +
                                                             self.batch_size]
                 V_batch = V[i:i+self.batch_size]
@@ -198,7 +212,10 @@ class CDL():
 
     # create directory
     def make_directory(self):
-        os.makedirs(self.dir_save)
+        try:
+            os.makedirs(self.dir_save)
+        except OSError as e:
+            pass
 
         fp = open(self.dir_save+'/cdl.log', 'w')
         print('lambda_v/lambda_u/ratio/K: %f/%f/%f/%d' % (self.lambda_v, self.lambda_u, self.lv, self.k))
