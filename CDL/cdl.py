@@ -1,4 +1,4 @@
-from SDAE import SDAE
+# from SDAE import SDAE
 import tensorflow as tf
 import os
 import csv
@@ -8,9 +8,9 @@ from mf import MF
 from utils import add_noise
 from datetime import datetime
 
-np.random.seed(5)
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
-tf.compat.v1.disable_eager_execution()
+# np.random.seed(5)
+# os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+# tf.compat.v1.disable_eager_execution()
 
 
 # MODEL
@@ -29,8 +29,13 @@ class CDL():
     def __init__(
         self,
             rating_matrix, item_infomation_matrix,
-            lambda_u, lambda_v, lambda_w, lv, K, epochs, batch, dir_save, dropout, recall_m
+            lambda_u, lambda_v, lambda_w, lv, K, epochs, batch, dir_save, dropout, recall_m,
+            trained_matrix, pretrain=0
     ):
+
+        np.random.seed(5)
+        os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+        tf.compat.v1.disable_eager_execution()
 
         self.n_input = 8000
         self.n_hidden1 = 200
@@ -54,19 +59,39 @@ class CDL():
         self.num_u = rating_matrix.shape[0]
         self.num_v = rating_matrix.shape[1]
 
-        self.Weights = {
-            'w1': tf.Variable(tf.random.normal([self.n_input, self.n_hidden1], mean=0.0, stddev=1 / self.lambda_w)),
-            'w2': tf.Variable(tf.random.normal([self.n_hidden1, self.n_hidden2], mean=0.0, stddev=1 / self.lambda_w)),
-            'w3': tf.Variable(tf.random.normal([self.n_hidden2, self.n_hidden1], mean=0.0, stddev=1 / self.lambda_w)),
-            'w4': tf.Variable(tf.random.normal([self.n_hidden1, self.n_input], mean=0.0, stddev=1 / self.lambda_w))
-        }
-        self.Biases = {
-            'b1': tf.Variable(tf.random.normal([self.n_hidden1], mean=0.0, stddev=1 / self.lambda_w)),
-            'b2': tf.Variable(tf.random.normal([self.n_hidden2], mean=0.0, stddev=1 / self.lambda_w)),
-            'b3': tf.Variable(tf.random.normal([self.n_hidden1], mean=0.0, stddev=1 / self.lambda_w)),
-            'b4': tf.Variable(tf.random.normal([self.n_input], mean=0.0, stddev=1 / self.lambda_w))
-        }
-        
+        if pretrain == 1:
+            self.Weights = {
+                'w1': tf.Variable(trained_matrix[0]['w1']),
+                'w2': tf.Variable(trained_matrix[1]['w1']),
+                'w3': tf.Variable(trained_matrix[1]['w2']),
+                'w4': tf.Variable(trained_matrix[0]['w2'])
+            }
+            self.Biases = {
+                'b1': tf.Variable(trained_matrix[0]['b1']),
+                'b2': tf.Variable(trained_matrix[1]['b1']),
+                'b3': tf.Variable(trained_matrix[1]['b2']),
+                'b4': tf.Variable(trained_matrix[0]['b2'])
+            }
+        else:
+            self.Weights = {
+                'w1': tf.Variable(tf.random.normal([self.n_input, self.n_hidden1], mean=0.0, stddev=1 / self.lambda_w)),
+                'w2': tf.Variable(tf.random.normal([self.n_hidden1, self.n_hidden2], mean=0.0, stddev=1 / self.lambda_w)),
+                'w3': tf.Variable(tf.random.normal([self.n_hidden2, self.n_hidden1], mean=0.0, stddev=1 / self.lambda_w)),
+                'w4': tf.Variable(tf.random.normal([self.n_hidden1, self.n_input], mean=0.0, stddev=1 / self.lambda_w))
+            }            
+            self.Biases = {
+                'b1': tf.Variable(tf.random.normal([self.n_hidden1], mean=0.0, stddev=1 / self.lambda_w)),
+                'b2': tf.Variable(tf.random.normal([self.n_hidden2], mean=0.0, stddev=1 / self.lambda_w)),
+                'b3': tf.Variable(tf.random.normal([self.n_hidden1], mean=0.0, stddev=1 / self.lambda_w)),
+                'b4': tf.Variable(tf.random.normal([self.n_input], mean=0.0, stddev=1 / self.lambda_w))
+            }
+
+        for k in self.Weights.keys():
+            print('Shape for {} is {}'.format(k, self.Weights[k]))
+
+        for k in self.Biases.keys():
+            print('Shape for {} is {}'.format(k, self.Biases[k]))
+
         self.make_directory()
         self.item_infomation_matrix = item_infomation_matrix
         self.build_model()
