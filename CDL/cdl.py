@@ -8,11 +8,6 @@ from mf import MF
 from utils import add_noise
 from datetime import datetime
 
-# np.random.seed(5)
-# os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
-# tf.compat.v1.disable_eager_execution()
-
-
 # MODEL
 class CDL():
     '''
@@ -42,6 +37,7 @@ class CDL():
         self.n_hidden2 = 50
         self.noise = 0.3
         self.k = K
+        self.verbose = 0
 
         self.lv = lv
         self.lambda_w = lambda_w
@@ -85,12 +81,12 @@ class CDL():
                 'b3': tf.Variable(tf.random.normal([self.n_hidden1], mean=0.0, stddev=1 / self.lambda_w)),
                 'b4': tf.Variable(tf.random.normal([self.n_input], mean=0.0, stddev=1 / self.lambda_w))
             }
-
-        for k in self.Weights.keys():
-            print('Shape for {} is {}'.format(k, self.Weights[k]))
-
-        for k in self.Biases.keys():
-            print('Shape for {} is {}'.format(k, self.Biases[k]))
+        
+        if self.verbose == 1:
+            for k in self.Weights.keys():
+                print('Shape for {} is {}'.format(k, self.Weights[k]))
+            for k in self.Biases.keys():
+                print('Shape for {} is {}'.format(k, self.Biases[k]))
 
         self.make_directory()
         self.item_infomation_matrix = item_infomation_matrix

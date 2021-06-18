@@ -1,3 +1,4 @@
+import numpy as np
 import tensorflow as tf
 from sklearn.metrics import accuracy_score, precision_score, recall_score
 from sklearn.model_selection import train_test_split
@@ -52,7 +53,9 @@ class SDAE(Model):
 
         for m in self.models:
             m.compile(optimizer='adam', loss=losses.MeanSquaredError())
-            m.fit(train_set, train_set, epochs=epochs, shuffle=True, validation_data=(test_set, test_set))
+            noise = np.random.normal(0, .1, train_set.shape)
+            x_train_corrupt = train_set + noise
+            m.fit(x_train_corrupt, train_set, epochs=epochs, shuffle=True, validation_data=(test_set, test_set))
             train_set = m.encode(train_set)
             test_set = m.encode(test_set)
 

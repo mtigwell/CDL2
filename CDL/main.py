@@ -18,7 +18,6 @@ except:
         rating_matrix = pickle.load(handle2)
 
 
-
 from SDAE import SDAE
 
 SPLIT = 0.8 #80/20
@@ -33,7 +32,6 @@ sdae.make()
 sdae.call(x_train, x_test, epochs=10)
 trained_model = sdae.get_layers()
 
-# pretrain = 0
 
 from cdl import CDL
 
@@ -42,17 +40,15 @@ batch = 256
 dropout = 0.1
 
 
-result_directory = 'results/test_raw'
-cdl = CDL(rating_matrix, item_matrix, lambda_u=1, lambda_v=10, lambda_w=10, lv=0.01, K=K, epochs=15, batch=batch, 
-        dir_save=result_directory, dropout=dropout, recall_m=100, trained_matrix=None, pretrain=0
-    )
-cdl.build_model()
-cdl.training(rating_matrix)
+# lambda hyperparameter search
+for lamU in [0.1, 1, 10]:
+    for lamV in [1, 10, 100]:
+        for lamW in [0.1, 1, 10]:
+            for lv in [0.001, 0.01, 0.1]:
+                result_directory = 'results/cdl/pretrained/U{}V{}W{}LV{}'.format(lamU, lamV, lamW, lv)                
+                cdl = CDL(rating_matrix, item_matrix, lambda_u=lamU, lambda_v=lamV, lambda_w=lamW, lv=lv, K=50, epochs=15, batch=256, dir_save=result_directory, dropout=0.1, recall_m=100,
+                        trained_matrix=trained_model, pretrain=1
+                    )       
+                cdl.build_model()
+                cdl.training(rating_matrix)
 
-
-result_directory = 'results/test_pretrain'
-cdl = CDL(rating_matrix, item_matrix, lambda_u=1, lambda_v=10, lambda_w=10, lv=0.01, K=K, epochs=15, batch=batch, 
-        dir_save=result_directory, dropout=dropout, recall_m=100, trained_matrix=trained_model, pretrain=1
-    )
-cdl.build_model()
-cdl.training(rating_matrix)
