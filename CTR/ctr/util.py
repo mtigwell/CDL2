@@ -6,7 +6,7 @@ import os
 from sklearn.decomposition import LatentDirichletAllocation
 import io
 from time import time
-
+import pandas as pd
 
 class PredictionImpossible(Exception):
     """Exception raised when a prediction is impossible.
@@ -32,6 +32,15 @@ def raw_pd_to_cropus(vocab_data, raw_doc_data, rating_data):
     return doc_ids,doc_word_ids,doc_word_cnts, ratings, raw_doc, tf_vec
 
 
+def create_userinfo(file_path, out_path):
+    new_list = []
+
+    with open(file_path, 'r') as handle:
+        for i, elem in enumerate(handle):
+            for item in elem.split(" "):
+                new_list.append([int(i)+1, int(item)+1, 1]) # add 1 to each because user info is 1 indexed and other file is 0 indexed
+    
+    pd.DataFrame(new_list).to_csv(out_path, header=['user.id', 'doc.id', 'rating'], index=False)
 
 
 def raw_doc_to_cropus(tf, raw_doc):

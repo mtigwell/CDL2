@@ -8,6 +8,7 @@ from time import time
 import gensim
 import logging
 from util import *
+from os import path
 
 logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
 
@@ -15,6 +16,10 @@ if __name__ == '__main__':
     print('Running...')
     vocab_data = [line.rstrip('\n') for line in io.open('../data/citeulike/vocab.dat', encoding='utf8')]
     raw_data = pd.read_csv('../data/citeulike/raw-data.csv', sep=',', encoding="ISO-8859-1")
+    
+    if not path.exists("../data/citeulike/user-info.csv"):
+        create_userinfo("../data/citeulike/users.dat", "../data/citeulike/user-info.csv")
+    
     rating_data = pd.read_csv("../data/citeulike/user-info.csv")
 
     print('Data imported..')
