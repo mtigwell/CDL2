@@ -4,14 +4,16 @@ import matplotlib.pyplot as plt
 class PMF:
     def __init__(self, params):
         self.params = params
-        self.n_users = params["users"]+1
+        self.n_users = params["users"]
         self.lamda = params["lambda"]
-        self.n_products = params["products"]+1
+        self.n_products = params["products"]
         self.mean_rat = 0
         self.train_res = []
         self.test_res = []
 
-    def fit(self, train_data, test_data):
+    def fit(self, train_data, test_data, rating_matrix):
+        # print('min: {}, max: {}'.format(np.min(train_data[:, 1]), np.max(train_data[:, 1])))
+
         epochs = self.params["epoch"]
         lr = self.params["lr"]
         lamda = self.params["lambda"]
@@ -28,8 +30,6 @@ class PMF:
         for epoch in range(epochs):
             print("Epoch: ", epoch, end=" ")
             np.random.shuffle(train_data)
-
-            print(round(train_data.shape[0]/batch_size))
 
             for batch in range(round(train_data.shape[0]/batch_size)):
                 train_batch = train_data[batch*batch_size:(batch+1)*batch_size]
@@ -67,6 +67,9 @@ class PMF:
             print("Current validation RMSE: ", test_loss)
             self.test_res.append(test_loss)
 
+            prediction_matrix = np.dot(w_users, w_products.T)
+            print('Validation Recall: {}'.format(self.get_recall(rating_matrix.T, prediction_matrix.T, 100)))
+
     def compute_obj(self, w_u, w_p, rat):
         w_u = w_u
         w_p = w_p
@@ -80,6 +83,64 @@ class PMF:
         err = rat - pred
         loss = np.linalg.norm(err)/np.sqrt(pred.shape[0]) 
         return loss
+
+    def get_recall(self, ratings, pred, m):
+        ''' 
+        inputs: 
+            ratings matrix: [users, items]
+            pred: floats [users, items]
+            m: recall@M
+        '''
+        # generate number of items user likes among top M
+        b = list()
+        top_m = np.argpartition(pred, -m)[:, -m:]
+
+        for i, row in enumerate(ratings):
+            newrow = np.take(row, top_m[i])
+            b.append(newrow)
+
+        b = np.array(b)
+        # b = b.squeeze(axis=1)
+        good_picks = np.sum(np.array(b), axis=1)
+
+        # total number user likes
+        user_picks = ratings.sum(axis=1)
+
+        # generate recall
+        user_recall = np.divide(good_picks, user_picks, where=user_picks != 0)
+        recall = np.mean(user_recall)
+        return recall
+
+
+    # def get_recall(self, w_u, w_p, ratings, m):
+    #     ''' 
+    #     inputs: 
+    #         ratings matrix: [users, items]
+    #         pred: floats [users, items]
+    #         m: recall@M
+    #     '''
+    #     pred = np.sum(np.multiply(w_u, w_p), 1) + self.mean_rat
+
+    #     # generate number of items user likes among top M
+    #     b = list()
+    #     top_m = np.argpartition(pred, -m)[:, -m:]
+
+    #     for i, row in enumerate(ratings):
+    #         newrow = np.take(row, top_m[i])
+    #         b.append(newrow)
+
+    #     b = np.array(b)
+    #     b = b.squeeze(axis=1)
+    #     good_picks = np.sum(np.array(b), axis=1)
+
+    #     # total number user likes
+    #     user_picks = ratings.sum(axis=1)
+
+    #     # generate recall
+    #     user_recall = np.divide(good_picks, user_picks, where=user_picks != 0)
+    #     recall = np.mean(user_recall)
+    #     return recall
+
 
     def plot_loss(self):
         plt.plot(np.arange(self.params["epoch"]), self.train_res, color="red", label="Training Loss")

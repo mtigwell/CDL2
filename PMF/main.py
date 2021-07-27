@@ -1,6 +1,7 @@
 import numpy as np
+from numpy.core.fromnumeric import prod
 from utils.utils import get_data, split_data
-from utils.dataloader import load_data
+from utils.dataloader import load_data, generate_rating_matrix
 import argparse
 from pmf.model import PMF
 from pmf.constrained_pmf import CPMF
@@ -28,22 +29,18 @@ if __name__=="__main__":
                         type=float, help="Momentum for SGD")
     parser.add_argument("--lr", default=10,
                         type=float, help="Learning rate parameter")
-    parser.add_argument("--features", default=10,
+    parser.add_argument("--features", default=50,
                         type=int, help="Number of latent features")
     parser.add_argument("--test_ratio", default=0.2,
                         type=float, help="Ratio of size of test dataset")
 
     args = parser.parse_args()
 
-    # Using default netflix dataset, using url to download data or load data from path.
-    if args.mode == "netflix":
-        data = get_data()
-    elif args.mode == "citeulike":
+    if args.mode == "citeulike":
         data = load_data()
-    elif args.mode == "download":
-        data = get_data(args.mode, args.data_url)
-    else:
-        data = get_data(args.mode, "", args.data_path)
+        users = np.unique(data[:, 0]).shape[0]
+        products = np.unique(data[:, 1]).shape[0]
+        rating_mat = generate_rating_matrix(users, products)
 
     train, test = split_data(data, SEED, args.test_ratio)
 
@@ -61,18 +58,12 @@ if __name__=="__main__":
 
     if args.algorithm == "PMF":
         PMF_experiment = PMF(params)
-        PMF_experiment.fit(train, test)
+        PMF_experiment.fit(train, test, rating_mat)
         PMF_experiment.plot_loss()
-
     #Adaptive Priors
-    elif args.algorithm == "CPMF":
-        CPMF_experiment = CPMF(params)
-        CPMF_experiment.fit(train, test)
-        CPMF_experiment.plot_loss()
-
+    # elif args.algorithm == "CPMF":
+    #     CPMF_experiment = CPMF(params)
+    #     CPMF_experiment.fit(train, test)
+    #     CPMF_experiment.plot_loss()
     else:
         print("Invalid algorithm")
-
-
-
-

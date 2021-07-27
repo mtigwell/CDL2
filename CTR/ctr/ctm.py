@@ -178,6 +178,7 @@ class CollaborativeTopicModel:
         if self.verbose:
             print('Init Reconstruction error:{:.4f}, \tLikelihood:{:.4f}'.format(self.sqr_error(), self.likelihood()[0]))
             logging.info('Init Reconstruction error:{:.4f}, \tLikelihood:{:.4f}'.format(self.sqr_error(), self.likelihood()[0]))
+            logging.info('Recall:{:.4f}'.format(self.get_recall(100)))
 
         for iteration in xrange(self.start_iter, max_iter):
             if self.verbose:
@@ -215,6 +216,37 @@ class CollaborativeTopicModel:
         if is_weight: err = self.C * err
         err = err.sum()
         return err
+    
+
+    def get_recall(self, m):
+        ''' 
+        inputs: 
+            ratings matrix: [users, items]
+            pred: floats [users, items]
+            m: recall@M
+        '''
+        pred = self.predict_item()
+
+        # generate number of items user likes among top M
+        b = list()
+        top_m = np.argpartition(pred, -m)[:, -m:]
+
+        for i, row in enumerate(self.R):
+            newrow = np.take(row, top_m[i])
+            b.append(newrow)
+
+        b = np.array(b)
+        b = b.squeeze(axis=1)
+        good_picks = np.sum(np.array(b), axis=1)
+
+        # total number user likes
+        user_picks = self.R.sum(axis=1)
+
+        # generate recall
+        user_recall = np.divide(good_picks, user_picks, where=user_picks != 0)
+        recall = np.mean(user_recall)
+        return recall
+
 
     def likelihood(self):
         # ui
