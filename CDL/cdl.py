@@ -1,4 +1,5 @@
 # from SDAE import SDAE
+from re import X
 import tensorflow as tf
 import os
 import csv
@@ -47,7 +48,7 @@ class CDL():
 
         self.drop_ratio = dropout
         self.learning_rate = 0.001
-        self.m = recall_m
+        # self.m = recall_m
         self.epochs = epochs
         self.batch_size = batch
         self.dir_save = dir_save
@@ -188,13 +189,21 @@ class CDL():
 
             # get recall
             R = U.T * V.T  # predictions
-            recall = self.get_recall(rating_matrix.T, R.T, self.m)
+            recall = self.get_recalls(rating_matrix.T, R.T)
 
             print('Loss: {}'.format(my_loss))
             print('Recall: {}'.format(recall))
             print('Epoch time: {}'.format(datetime.now() - start))
 
             self.write_results(epoch, my_loss, recall, datetime.now() - start)
+
+
+    def get_recalls(self, ratings, pred):
+        recall = []
+        for m in [50, 100, 150, 200, 250, 300]:
+            recall.append(self.get_recall(ratings, pred, m))
+        return recall
+
 
     def get_recall(self, ratings, pred, m):
         ''' 
@@ -219,17 +228,33 @@ class CDL():
         user_picks = ratings.sum(axis=1)
 
         # generate recall
-        user_recall = np.divide(good_picks, user_picks, where=user_picks != 0)
+        user_recall = np.zeros(user_picks.shape)
+        np.divide(good_picks, user_picks, out=user_recall, where=user_picks!=0)
+
+        # user_recall[np.isnan(user_recall)] = 0 # remove any nan
+        print('recall max {}, min {}'.format(max(user_recall), min(user_recall)))
+
         recall = np.mean(user_recall)
         return recall
 
+
     def write_results(self, ep, loss, recall, time):
         with open('{}/errors.csv'.format(self.dir_save), mode='a') as f:
-            fieldnames = ['Epoch', 'Loss', 'Recall', 'Time']
+            fieldnames = ['Epoch', 'Loss', 'Recall50',  'Recall100', 'Recall150', 'Recall200', 'Recall250', 'Recall300']
             writer = csv.DictWriter(f, fieldnames=fieldnames)
             # writer.writeheader()
-            writer.writerow({'Epoch': ep, 'Loss': loss,
-                            'Recall': recall, 'Time': time})
+            writer.writerow(
+                {
+                    'Epoch': ep, 
+                    'Loss': loss,
+                    'Recall50': recall[0], 
+                    'Recall100': recall[1], 
+                    'Recall150': recall[2], 
+                    'Recall200': recall[3], 
+                    'Recall250': recall[4], 
+                    'Recall300': recall[5], 
+                }
+            )
 
     # create directory
     def make_directory(self):

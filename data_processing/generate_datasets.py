@@ -74,5 +74,11 @@ def calculate_sparsity(users_file):
 calculate_sparsity('../data/citeulike/citeulike-a/users.dat')
 create_dataset('../data/citeulike/citeulike-a/users.dat', '../data/citeulike/citeulike-a/users-1.dat', 0.9)
 create_dataset('../data/citeulike/citeulike-a/users-1.dat', '../data/citeulike/citeulike-a/users-2.dat', 0.9)
-create_dataset('../data/citeulike/citeulike-a/users-2.dat', '../data/citeulike/citeulike-a/users-3.dat', 0.8)
-create_dataset('../data/citeulike/citeulike-a/users-3.dat', '../data/citeulike/citeulike-a/users-4.dat', 0.8)
+create_dataset('../data/citeulike/citeulike-a/users-2.dat', '../data/citeulike/citeulike-a/users-3.dat', 0.9)
+create_dataset('../data/citeulike/citeulike-a/users-3.dat', '../data/citeulike/citeulike-a/users-4.dat', 0.9)
+create_dataset('../data/citeulike/citeulike-a/users-4.dat', '../data/citeulike/citeulike-a/users-5.dat', 0.9)
+create_dataset('../data/citeulike/citeulike-a/users-5.dat', '../data/citeulike/citeulike-a/users-6.dat', 0.9)
+create_dataset('../data/citeulike/citeulike-a/users-6.dat', '../data/citeulike/citeulike-a/users-7.dat', 0.9)
+create_dataset('../data/citeulike/citeulike-a/users-7.dat', '../data/citeulike/citeulike-a/users-8.dat', 0.9)
+create_dataset('../data/citeulike/citeulike-a/users-8.dat', '../data/citeulike/citeulike-a/users-9.dat', 0.9)
+
